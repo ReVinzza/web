@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product - Portofolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-dark: #0d1117;
+      --bg-card: #161b22;
+      --accent: #3b82f6;
+      --accent2: #8b5cf6;
+      --text-light: #e5e7eb;
+      --text-dim: #94a3b8;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #111827, #0d1117);
+      color: var(--text-light);
+      overflow-x: hidden;
+    }
+
+    /* Tombol menu */
+    .menu-btn {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      z-index: 1001;
+      backdrop-filter: blur(10px);
+      transition: 0.3s ease;
+      box-shadow: 0 0 10px rgba(59,130,246,0.4);
+    }
+    .menu-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(17, 24, 39, 0.98);
+      backdrop-filter: blur(12px);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 25px 20px;
+      box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+    }
+    .sidebar.active {
+      transform: translateX(0);
+    }
+
+    /* User info */
+    .user-info {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .user-info i {
+      font-size: 40px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 15px;
+      background: rgba(59,130,246,0.15);
+      box-shadow: 0 0 10px rgba(59,130,246,0.5);
+    }
+    .user-info span {
+      display: block;
+      font-size: 1rem;
+      color: var(--text-light);
+    }
+    .user-info span:last-child {
+      color: #22d3ee;
+      font-weight: bold;
+    }
+
+    /* Menu */
+    .menu {
+      flex-grow: 1;
+    }
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-light);
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 12px;
+      margin: 6px 0;
+      transition: all 0.3s;
+    }
+    .menu a i {
+      width: 20px;
+      text-align: center;
+    }
+    .menu a:hover {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+    }
+    .menu a.active {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Sosial media */
+    .social-links {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 10px;
+    }
+    .social-links a {
+      color: var(--text-dim);
+      font-size: 1.4rem;
+      transition: 0.3s;
+    }
+    .social-links a:hover {
+      color: var(--accent2);
+      text-shadow: 0 0 10px var(--accent2);
+    }
+
+    /* Overlay */
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .backdrop.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Konten utama */
+    .main {
+      margin: 100px auto;
+      max-width: 900px;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .main h1 {
+      font-size: 2.2em;
+      color: var(--accent);
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      margin-bottom: 25px;
+    }
+
+    /* Grid produk */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background: linear-gradient(145deg, rgba(30,41,59,0.85), rgba(17,24,39,0.95));
+      border-radius: 20px;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(59,130,246,0.3);
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+    .product-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 0 25px rgba(139,92,246,0.7);
+    }
+    .product-card img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      box-shadow: 0 0 20px rgba(59,130,246,0.6);
+      transition: 0.4s;
+    }
+    .product-card:hover img {
+      transform: scale(1.08);
+      box-shadow: 0 0 35px rgba(59,130,246,0.9);
+    }
+    .product-card h3 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    .product-card p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .product-card .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 25px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s ease;
+      box-shadow: 0 0 15px rgba(59,130,246,0.7);
+    }
+    .product-card .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(139,92,246,1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Tombol Sidebar -->
+  <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div>
+      <div class="user-info">
+        <i class="fa-solid fa-user-shield"></i>
+        <span>User</span>
+        <span>VIP</span>
+      </div>
+
+      <div class="menu">
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="cpanel.html"><i class="fa-solid fa-server"></i> CPanel</a>
+        <a href="about.html"><i class="fa-solid fa-user"></i> About</a>
+        <a href="bug.html"><i class="fa-solid fa-bug"></i> Bug</a>
+        <a href="skills.html"><i class="fa-solid fa-code"></i> Skills</a>
+        <a href="product.html" class="active"><i class="fa-solid fa-box"></i> Product</a>
+        <a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+      </div>
+    </div>
+
+    <div class="social-links">
+      <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="#"><i class="fa-brands fa-telegram"></i></a>
+      <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+    </div>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <h1>Produk Saya 🛍️</h1>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://files.catbox.moe/k65wve.jpg" alt="Produk 1">
+        <h3>Website Development</h3>
+        <p>Kualitas terbaik untuk kebutuhan bisnis & portofolio Anda.</p>
+        <a href="#" class="btn">Beli Sekarang</a>
+      </div>
+
+      <div class="product-card">
+        <img src="https://files.catbox.moe/87iqtw.jpeg" alt="Produk 2">
+        <h3>Script Bot WhatsApp</h3>
+        <p>Bot multifungsi untuk otomatisasi aktivitas Anda.</p>
+        <a href="#" class="btn">Beli Sekarang</a>
+      </div>
+
+      <div class="product-card">
+        <img src="https://files.catbox.moe/qbktsj.jpg" alt="Produk 3">
+        <h3>Panel Pterodactyl</h3>
+        <p>Hosting panel modern mulai dari 1GB hingga unlimited.</p>
+        <a href="#" class="btn">Beli Sekarang</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('backdrop');
+    const menuBtn = document.querySelector('.menu-btn');
+
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      backdrop.classList.toggle('active');
+    });
+
+    backdrop.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+      backdrop.classList.remove('active');
+    });
+  </script>
+</body>
+</html>

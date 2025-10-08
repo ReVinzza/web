@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vocaloid Exestras Website</title>
+<style>
+  body {
+    background: radial-gradient(circle at top left, #111827, #0d1117);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #e5e7eb;
+  }
+
+  .container {
+    background: linear-gradient(145deg, #161b22, #1e242e);
+    padding: 36px 28px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5),
+                inset 0 1px 1px rgba(255,255,255,0.05);
+    text-align: center;
+    position: relative;
+    width: 380px;
+    transition: all 0.3s ease;
+  }
+
+  .container:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6),
+                inset 0 1px 1px rgba(255,255,255,0.08);
+  }
+
+  h2 {
+    color: #00ffe0;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #00ffe0;
+    background: #0d1117;
+    color: white;
+    width: calc(100% - 24px);
+    margin-bottom: 16px;
+    outline: none;
+    font-size: 15px;
+    transition: 0.2s;
+  }
+
+  input:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 10px rgba(16,185,129,0.3);
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    margin: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+
+  .btn:hover {
+    transform: scale(1.05);
+  }
+
+  .android { background: #ff8a00; box-shadow: 0 0 10px rgba(255,138,0,0.4); }
+  .iphone { background: #8b5cf6; box-shadow: 0 0 10px rgba(139,92,246,0.4); }
+  .delay { background: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.4); }
+
+  .back {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #374151;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #e5e7eb;
+    border: 1px solid #4b5563;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .back:hover {
+    background: #4b5563;
+    color: #00ffe0;
+  }
+
+  .status, .info, .support {
+    margin-top: 14px;
+  }
+
+  .support {
+    color: #facc15;
+    font-weight: 500;
+  }
+
+  .glow {
+    box-shadow: 0 6px 20px rgba(0,255,224,0.08),
+                0 0 12px rgba(0,255,224,0.06) inset;
+  }
+
+  footer {
+    color: #9ca3af;
+    font-size: 13px;
+    margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="mainContent">
+  <button class="back" onclick="goBack()">← Kembali</button>
+  <h2>Vocaloid Exestras Website</h2>
+
+  <input type="text" placeholder="Masukan Nomor Target" id="targetNumber" />
+
+  <div>
+    <button class="btn android glow" onclick="sendAction('Crash Android', 'https://files.catbox.moe/pdwu5t.mp3')">Crash Android</button>
+    <button class="btn iphone glow" onclick="sendAction('Crash iPhone', 'https://files.catbox.moe/pdwu5t.mp3')">Crash iPhone</button>
+  </div>
+
+  <button class="btn delay glow" onclick="sendAction('Delay Mention', 'https://files.catbox.moe/pdwu5t.mp3')">Delay Mention</button>
+
+  <div class="status">Status: <span id="statusText" style="color: #00ffe0;">Server Aktif</span></div>
+  <div class="info">Info: Selamat datang, User</div>
+  <div class="support">Support</div>
+
+  <footer>© Created By Revinza</footer>
+</div>
+
+<audio id="sfxPlayer" preload="auto"></audio>
+
+<script>
+function goBack() {
+  window.location.href = "index.html";
+}
+
+async function playSfx(src) {
+  try {
+    const player = document.getElementById('sfxPlayer');
+    player.src = src;
+    player.currentTime = 0;
+    player.volume = 1.0;
+    await player.play();
+  } catch (err) {
+    console.warn('Audio play failed:', err);
+  }
+}
+
+function sendAction(action, audioUrl) {
+  const number = document.getElementById('targetNumber').value.trim();
+  if (!number) {
+    alert('Masukan nomor target terlebih dahulu.');
+    playSfx('https://files.catbox.moe/pdwu5t.mp3').catch(()=>{});
+    return;
+  }
+
+  playSfx(audioUrl).catch(()=>{});
+
+  const statusEl = document.getElementById('statusText');
+  statusEl.innerText = 'Memproses...';
+
+  setTimeout(() => {
+    statusEl.innerText = 'Sukses menjalankan ' + action;
+    alert(action + ' terkirim ke ' + number);
+    playSfx('https://cdn.pixabay.com/download/audio/2022/03/15/audio_132f81b8a8.mp3').catch(()=>{});
+  }, 700);
+}
+</script>
+
+</body>
+</html>
